@@ -1,7 +1,12 @@
 // Copyright (c) 2023 Zoe <zoe@zyoh.ca>
 
-pub mod vrcinput;
-pub mod vrcosc;
+mod vrcinput;
+mod vrcosc;
+mod vrcavatar;
+
+pub use vrcinput::VRChatOSCInput;
+pub use vrcavatar::VRChatOSCOutput;
+pub use vrcosc::VRChatOSC;
 
 fn contrain_value(value: f32) -> f32 {
     if value > 1.0 {
