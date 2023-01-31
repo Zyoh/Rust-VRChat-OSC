@@ -1,0 +1,11 @@
+[package]
+name = "vrchat_osc"
+version = "0.1.0"
+edition = "2021"
+authors = ["Zoe <zoe@zyoh.ca>"]
+license = ""
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rosc = "0.9.1"
