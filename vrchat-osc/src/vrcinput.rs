@@ -1,5 +1,7 @@
 // Copyright (c) 2023 Zoe <zoe@zyoh.ca>
 
+use crate::VRChatOSCType;
+
 use rosc::OscType;
 
 pub enum VRChatOSCInput {
@@ -37,6 +39,7 @@ pub enum VRChatOSCInput {
     ChatboxInput(String, bool),
     ChatboxTyping(bool),
 
+    Avatar(String, VRChatOSCType),
     Custom(String, Vec<OscType>),
 }
 
@@ -77,47 +80,49 @@ impl VRChatOSCInput {
             VRChatOSCInput::ChatboxInput(value, immediate) => vec![OscType::String(value.to_owned()), OscType::Bool(*immediate)],
             VRChatOSCInput::ChatboxTyping(value) => vec![OscType::Bool(*value)],
 
+            VRChatOSCInput::Avatar(_, value) => vec![value.to_osc_type()],
             VRChatOSCInput::Custom(_, value) => value.to_owned(),
         }
     }
 
     pub fn to_osc_addr(&self) -> String {
         match self {
-            VRChatOSCInput::Vertical(_) => "/input/Vertical",
-            VRChatOSCInput::Horizontal(_) => "/input/Horizontal",
-            VRChatOSCInput::LookHorizontal(_) => "/input/LookHorizontal",
-            VRChatOSCInput::UseAxisRight(_) => "/input/UseAxisRight",
-            VRChatOSCInput::GrabAxisRight(_) => "/input/GrabAxisRight",
-            VRChatOSCInput::MoveHoldFB(_) => "/input/MoveHoldFB",
-            VRChatOSCInput::SpinHoldCwCcw(_) => "/input/SpinHoldCwCcw",
-            VRChatOSCInput::SpinHoldUD(_) => "/input/SpinHoldUD",
-            VRChatOSCInput::SpinHoldLR(_) => "/input/SpinHoldLR",
+            VRChatOSCInput::Vertical(_) => "/input/Vertical".to_string(),
+            VRChatOSCInput::Horizontal(_) => "/input/Horizontal".to_string(),
+            VRChatOSCInput::LookHorizontal(_) => "/input/LookHorizontal".to_string(),
+            VRChatOSCInput::UseAxisRight(_) => "/input/UseAxisRight".to_string(),
+            VRChatOSCInput::GrabAxisRight(_) => "/input/GrabAxisRight".to_string(),
+            VRChatOSCInput::MoveHoldFB(_) => "/input/MoveHoldFB".to_string(),
+            VRChatOSCInput::SpinHoldCwCcw(_) => "/input/SpinHoldCwCcw".to_string(),
+            VRChatOSCInput::SpinHoldUD(_) => "/input/SpinHoldUD".to_string(),
+            VRChatOSCInput::SpinHoldLR(_) => "/input/SpinHoldLR".to_string(),
 
-            VRChatOSCInput::MoveForward(_) => "/input/MoveForward",
-            VRChatOSCInput::MoveBackward(_) => "/input/MoveBackward",
-            VRChatOSCInput::MoveLeft(_) => "/input/MoveLeft",
-            VRChatOSCInput::MoveRight(_) => "/input/MoveRight",
-            VRChatOSCInput::LookLeft(_) => "/input/LookLeft",
-            VRChatOSCInput::LookRight(_) => "/input/LookRight",
-            VRChatOSCInput::Jump(_) => "/input/Jump",
-            VRChatOSCInput::Run(_) => "/input/Run",
-            VRChatOSCInput::ComfortLeft(_) => "/input/ComfortLeft",
-            VRChatOSCInput::ComfortRight(_) => "/input/ComfortRight",
-            VRChatOSCInput::DropRight(_) => "/input/DropRight",
-            VRChatOSCInput::UseRight(_) => "/input/UseRight",
-            VRChatOSCInput::GrabRight(_) => "/input/GrabRight",
-            VRChatOSCInput::DropLeft(_) => "/input/DropLeft",
-            VRChatOSCInput::UseLeft(_) => "/input/UseLeft",
-            VRChatOSCInput::GrabLeft(_) => "/input/GrabLeft",
-            VRChatOSCInput::PanicButton(_) => "/input/PanicButton",
-            VRChatOSCInput::QuickMenuToggleLeft(_) => "/input/QuickMenuToggleLeft",
-            VRChatOSCInput::QuickMenuToggleRight(_) => "/input/QuickMenuToggleRight",
-            VRChatOSCInput::Voice(_) => "/input/Voice",
+            VRChatOSCInput::MoveForward(_) => "/input/MoveForward".to_string(),
+            VRChatOSCInput::MoveBackward(_) => "/input/MoveBackward".to_string(),
+            VRChatOSCInput::MoveLeft(_) => "/input/MoveLeft".to_string(),
+            VRChatOSCInput::MoveRight(_) => "/input/MoveRight".to_string(),
+            VRChatOSCInput::LookLeft(_) => "/input/LookLeft".to_string(),
+            VRChatOSCInput::LookRight(_) => "/input/LookRight".to_string(),
+            VRChatOSCInput::Jump(_) => "/input/Jump".to_string(),
+            VRChatOSCInput::Run(_) => "/input/Run".to_string(),
+            VRChatOSCInput::ComfortLeft(_) => "/input/ComfortLeft".to_string(),
+            VRChatOSCInput::ComfortRight(_) => "/input/ComfortRight".to_string(),
+            VRChatOSCInput::DropRight(_) => "/input/DropRight".to_string(),
+            VRChatOSCInput::UseRight(_) => "/input/UseRight".to_string(),
+            VRChatOSCInput::GrabRight(_) => "/input/GrabRight".to_string(),
+            VRChatOSCInput::DropLeft(_) => "/input/DropLeft".to_string(),
+            VRChatOSCInput::UseLeft(_) => "/input/UseLeft".to_string(),
+            VRChatOSCInput::GrabLeft(_) => "/input/GrabLeft".to_string(),
+            VRChatOSCInput::PanicButton(_) => "/input/PanicButton".to_string(),
+            VRChatOSCInput::QuickMenuToggleLeft(_) => "/input/QuickMenuToggleLeft".to_string(),
+            VRChatOSCInput::QuickMenuToggleRight(_) => "/input/QuickMenuToggleRight".to_string(),
+            VRChatOSCInput::Voice(_) => "/input/Voice".to_string(),
 
-            VRChatOSCInput::ChatboxInput(_, _) => "/chatbox/input",
-            VRChatOSCInput::ChatboxTyping(_) => "/chatbox/typing",
+            VRChatOSCInput::ChatboxInput(_, _) => "/chatbox/input".to_string(),
+            VRChatOSCInput::ChatboxTyping(_) => "/chatbox/typing".to_string(),
 
-            VRChatOSCInput::Custom(addr, _) => addr,
-        }.to_string()
+            VRChatOSCInput::Avatar(addr, _) => format!("/avatar/parameters/{}", addr.trim_matches('/')),
+            VRChatOSCInput::Custom(addr, _) => addr.to_string(),
+        }
     }
 }

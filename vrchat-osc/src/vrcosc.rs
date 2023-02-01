@@ -6,9 +6,9 @@ use rosc::{OscType, OscMessage, OscPacket, encoder};
 use crate::vrcinput::VRChatOSCInput;
 
 pub struct VRChatOSC {
-    application_binds_to_addr: String,
-    vrchat_sends_to_addr: String,
-    vrchat_listens_to_addr: String,
+    pub application_binds_to_addr: String,
+    pub vrchat_sends_to_addr: String,
+    pub vrchat_listens_to_addr: String,
 }
 
 impl Default for VRChatOSC {
