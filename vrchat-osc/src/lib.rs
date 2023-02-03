@@ -1,36 +1,26 @@
 // Copyright (c) 2023 Zoe <zoe@zyoh.ca>
 
-mod vrcinput;
-mod vrcosc;
-mod vrcavatar;
-mod vrctype;
+mod input;
+mod engine;
+mod output;
+mod value;
 
-pub use vrcinput::VRChatOSCInput;
-pub use vrcavatar::VRChatOSCOutput;
-pub use vrcosc::VRChatOSC;
-pub use vrctype::VRChatOSCType;
-
-fn contrain_value(value: f32) -> f32 {
-    if value > 1.0 {
-        1.0
-    } else if value < -1.0 {
-        -1.0
-    } else {
-        value
-    }
-}
+pub use input::Input;
+pub use output::Output;
+pub use engine::Engine;
+pub use value::Value;
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    use vrcinput::VRChatOSCInput;
-    use vrcosc::VRChatOSC;
+    use input::Input;
+    use engine::Engine;
 
     #[test]
     fn test_send_voice_value() {
-        let vrchat_osc = VRChatOSC::default();
-        let message = VRChatOSCInput::Voice(false);
-        vrchat_osc.send_vrc_input(message).unwrap();
+        let engine = Engine::default();
+        let message = Input::Voice(false);
+        engine.send(message).unwrap();
     }
 }

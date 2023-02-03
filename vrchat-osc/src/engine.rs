@@ -1,17 +1,17 @@
 // Copyright (c) 2023 Zoe <zoe@zyoh.ca>
 
+use crate::input::Input;
+
 use std::{net::{UdpSocket, SocketAddrV4}, error::Error, str::FromStr};
-use rosc::{OscType, OscMessage, OscPacket, encoder};
+use rosc::{OscMessage, OscPacket, encoder};
 
-use crate::vrcinput::VRChatOSCInput;
-
-pub struct VRChatOSC {
+pub struct Engine {
     pub application_binds_to_addr: String,
     pub vrchat_sends_to_addr: String,
     pub vrchat_listens_to_addr: String,
 }
 
-impl Default for VRChatOSC {
+impl Default for Engine {
     fn default() -> Self {
         Self {
             application_binds_to_addr: "127.0.0.1:49999".to_string(),
@@ -21,22 +21,17 @@ impl Default for VRChatOSC {
     }
 }
 
-impl VRChatOSC {
-    fn send_message(&self, addr: &str, args: Vec<OscType>) -> Result<(), Box<dyn Error>> {
+impl Engine {
+    fn send_message(&self, message: OscMessage) -> Result<(), Box<dyn Error>> {
         let sock = UdpSocket::bind(&self.application_binds_to_addr)?;
-
-        let msg_buf = encoder::encode(&OscPacket::Message(OscMessage {
-            addr: addr.to_string(),
-            args,
-        }))?;
-
+        let msg_buf = encoder::encode(&OscPacket::Message(message))?;
         sock.send_to(&msg_buf, &self.vrchat_listens_to_addr)?;
 
         Ok(())
     }
 
-    pub fn send_vrc_input(&self, vrc_input: VRChatOSCInput) -> Result<(), Box<dyn Error>> {
-        self.send_message(&vrc_input.to_osc_addr(), vrc_input.to_osc_type())
+    pub fn send(&self, message: Input) -> Result<(), Box<dyn Error>> {
+        self.send_message(message.into())
     }
 
     pub fn listen(&self, callback: &dyn Fn(OscMessage)) -> Result<(), Box<dyn Error>> {
