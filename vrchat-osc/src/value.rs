@@ -19,16 +19,6 @@ pub enum Value {
     Int(u8),
 }
 
-impl Value {
-    pub fn to_osc_type(&self) -> OscType {
-        match self {
-            Value::Bool(value) => OscType::Bool(*value),
-            Value::Float(value) => OscType::Float(*value),
-            Value::Int(value) => OscType::Int(*value as i32),
-        }
-    }
-}
-
 impl From<bool> for Value {
     fn from(value: bool) -> Self {
         Self::Bool(value)
@@ -76,6 +66,16 @@ impl TryInto<u8> for Value {
         match self {
             Self::Int(value) => Ok(value),
             _ => Err("Value is not int."),
+        }
+    }
+}
+
+impl Into<OscType> for Value {
+    fn into(self) -> OscType {
+        match self {
+            Value::Bool(value) => OscType::Bool(value),
+            Value::Float(value) => OscType::Float(value),
+            Value::Int(value) => OscType::Int(value as i32),
         }
     }
 }

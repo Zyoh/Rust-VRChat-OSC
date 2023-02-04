@@ -49,7 +49,10 @@ macro_rules! input {
                     Self::ChatboxInput(value, immediate) => vec![OscType::String(value.to_owned()), OscType::Bool(*immediate)],
                     Self::ChatboxTyping(value) => vec![OscType::Bool(*value)],
 
-                    Self::Avatar(_, value) => vec![value.to_osc_type()],
+                    Self::Avatar(_, value) => {
+                        let v: OscType = value.to_owned().into();
+                        vec![v]
+                    },
                     Self::Custom(_, value) => value.to_owned(),
                 };
 
@@ -111,9 +114,15 @@ mod test {
 
     #[test]
     fn test_float() {
-        for (value, cvalue) in 
-            vec![(-2.0, -1.0), (-1.0, -1.0), (-0.5, -0.5), (0.0, 0.0), (0.5, 0.5), (1.0, 1.0), (2.0, 1.0)] {
-            
+        for (value, cvalue) in vec![
+            (-2.0, -1.0), 
+            (-1.0, -1.0), 
+            (-0.5, -0.5), 
+            (0.0, 0.0), 
+            (0.5, 0.5), 
+            (1.0, 1.0), 
+            (2.0, 1.0)
+        ] {
             let message: OscMessage = Input::Vertical(value).into();
             assert_eq!(message.args, vec![OscType::Float(cvalue)]);
         }
